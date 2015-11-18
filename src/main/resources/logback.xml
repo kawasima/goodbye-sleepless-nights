@@ -1,0 +1,32 @@
+<configuration>
+    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+    <appender name="PROGRESS_SHIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>jobId</key>
+            <defaultValue>UNKNOWN</defaultValue>
+        </discriminator>
+        <sift>
+            <appender name="PROGRESS_APPENDER" class="ch.qos.logback.core.FileAppender">
+                <file>log/rogress_${jobId}_${bySecond}.log</file>
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>%date{yyyy-MM-dd'T'HHmmss.SSS} %msg%n</pattern>
+                </layout>
+            </appender>
+        </sift>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{yyyy-MM-dd'T'HHmmss.SSS} %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="WARN">
+        <!--<appender-ref ref="STDOUT"/>-->
+    </root>
+    <logger name="RECOVERY" level="WARN">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="PROGRESS" level="INFO">
+        <appender-ref ref="PROGRESS_SHIFT"/>
+    </logger>
+</configuration>
